@@ -1,9 +1,8 @@
-from chatterbot import ChatBot
-from chatterbot.trainers import ChatterBotCorpusTrainer
+import transformers
 
-chatbot=ChatBot('ai-bot')
-trainer = ChatterBotCorpusTrainer(chatbot)
-trainer.train("chatterbot.corpus.english")
+nlp = transformers.pipeline("conversational", model="microsoft/DialoGPT-medium")
 
-def ai_chatbot(inp):
-    return chatbot.get_response(inp)
+for i in range(5):
+    text = input("user -->")
+    chat = nlp(transformers.Conversation(text), pad_token_id=50256)
+    print('bot -->', str(chat))
