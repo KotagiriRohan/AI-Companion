@@ -1,13 +1,19 @@
 import cv2
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-image = cv2.imread("face.jpg")
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+cap = cv2.VideoCapture(0)
+while(cap.isOpened()):
+    _, image = cap.read()
 
-faces = face_cascade.detectMultiScale(gray,1.1, 4)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-for (x,y,w,h) in faces:
-    cv2.rectangle(image, (x,y),(x+w,y+h),(255,0,0),3)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
-cv2.imshow('face',image)
-cv2.waitKey()
+    for (x, y, w, h) in faces:
+        cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 3)
+
+    cv2.imshow('face', image)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+cap.release()
+cv2.destroyAllWindows()
